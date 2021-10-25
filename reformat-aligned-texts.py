@@ -123,6 +123,23 @@ class TestReformat(unittest.TestCase):
         )
         self.assertEqual(convert(test), expected)
 
+    def test_reformat_interlinear_text(self):
+        test = textwrap.dedent(
+            """\
+            \sr ὁ | δέ | κουφὀnους | ἐστὶν | •
+            \lm he | and | empty-headed | he is | ;
+            \gt d-msn | P | a-mss | v-3sp | ;
+            """
+        )
+        expected = textwrap.dedent(
+            """\
+            \sr ὁ     | δέ  | κουφὀnους    | ἐστὶν | •
+            \lm he    | and | empty-headed | he is | ;
+            \gt d-msn | P   | a-mss        | v-3sp | ;
+            """
+        )
+        self.assertEqual(convert(test), expected)
+
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
