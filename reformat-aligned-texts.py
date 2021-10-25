@@ -52,12 +52,14 @@ def reformat_cell(tup, column_widths):
     i = tup[0]
     cell = tup[1]
     m = is_header_cell(cell)
-    width = column_widths[i]
-    if m:
-        lft, mid, rgt = m
-        mid = mid[0]
-        return lft + mid * (width - len(lft) - len(rgt)) + rgt
-    return cell.ljust(width)
+    if i < len(column_widths):
+        width = column_widths[i]
+        if m:
+            lft, mid, rgt = m
+            mid = mid[0]
+            return lft + mid * (width - len(lft) - len(rgt)) + rgt
+        return cell.ljust(width)
+    return cell
 
 
 def column_width(cell):
@@ -68,12 +70,12 @@ def column_width(cell):
 
 def find_column_widths(rows):
     row = rows[0]
-    initial = list(map(lambda x: column_width(x), row))
+    initial = [column_width(col) for col in row]
     for row in rows[1:]:
         for i, cell in enumerate(row):
-            l = len(cell)
-            if l > initial[i]:
-                initial[i] = l
+            width = column_width(cell)
+            if i < len(initial) and width > initial[i]:
+                initial[i] = width
     return initial
 
 
@@ -88,6 +90,7 @@ def main():
 # Unit tests
 
 import unittest
+import textwrap
 
 
 class TestReformat(unittest.TestCase):
@@ -103,6 +106,23 @@ class TestReformat(unittest.TestCase):
         tup = (0, " -----------: ")
         self.assertEqual(reformat_cell(tup, [6]), "-----:")
 
+    def test_reformat_markdown_table(self):
+        test = textwrap.dedent(
+            """\
+            | Header | Header 2 | Header 3          |
+            | ------ | ---------------------------: | ---- |
+            | one    | two      | three three three |
+            """
+        )
+        expected = textwrap.dedent(
+            """\
+            | Header | Header 2 | Header 3          |
+            | ------ | -------: | ----------------- |
+            | one    | two      | three three three |
+            """
+        )
+        self.assertEqual(convert(test), expected)
+
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
@@ -110,6 +130,7 @@ if __name__ == "__main__":
         if action == "--test":
             unittest.main()
         elif action == "--clipboard":
+            print("Clipboarding with " + clipboard.paste())
             clipboard_main()
         else:
             print("Unknown action: {}".format(action))
