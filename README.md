@@ -1,24 +1,12 @@
 # Writing Alfred copy/paste scripts in Python
 
-This repository shows how to create [Alfred](https://www.alfredapp.com) scripts in Python. It assumes that you using [pyenv](https://github.com/pyenv/pyenv) for Python version management (although it could be used in other version managers). If you don't have `pyenv` installed, the instructions in [Python: Creating a clean learning environment with pyenv, pyenv-virtualenv & pipX](https://towardsdatascience.com/python-how-to-create-a-clean-learning-environment-with-pyenv-pyenv-virtualenv-pipx-ed17fbd9b790)
+This repository shows how to create [Alfred](https://www.alfredapp.com) scripts in Python. The examples below assume that you have Python 3 installed via Homebrew.
 
 Our working example will be a script that will convert text in the Mac clipboard to small caps, that is, for example, it will take "Hello World!" and replace it with "ʜᴇʟʟᴏ ᴡᴏʀʟᴅ!"
 
 ## Set up
 
 1. Create a directory in which you want to place your Python-based Alfred scripts. I created mine in `$HOME/projects/alfred-scripts`
-2. Create a clean Python environment for use in the directory, and set the local environment to it. I used `alfred-scripts` and based it off Python 3.7.2
-
-```bash
-   $ pyenv virtualenv 3.7.2 alfred-scripts
-   $ pyenv local alfred-scripts
-```
-
-3. Since we are creating scripts that will copy and paste from the Mac's clipboard, install the [`clipboard`](https://pypi.org/project/clipboard/) package.
-
-```bash
-   $ pip install clipboard
-```
 
 ## Writing and testing a script locally
 
@@ -86,12 +74,16 @@ Creating the Alfred workflow is relatively simple. Create a new worklfow and nam
 3. Running your script
 4. Executing ⌘V to paste text
 
-The script should look like this (I use [zsh](https://www.zsh.org), but you might need to source a different dot-file):
+The script should look like this (I use [zsh](https://www.zsh.org), your script might vary). Note that
+we install the `clipboard` package; if there are other packages you need, you'll want to do the same thing.
 
-```bash
-source $HOME/.zshrc
-pyenv activate alfred-scripts
-python $HOME/projects/alfred-scripts/upper.py --clipboard
+```zsh
+export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
+export SCRIPTDIR=$HOME/projects/alfred-scripts
+export PYTHONPATH=$SCRIPTDIR/dist
+python3 -m pip install --target $PYTHONPATH clipboard --exists-action a
+python3 $SCRIPTDIR/upper.py --clipboard
+
 ```
 
 This is what the workflow looks like:
@@ -99,3 +91,6 @@ This is what the workflow looks like:
 <img width="839" alt="Workflow" src="https://user-images.githubusercontent.com/37049/138725865-26e7b952-7b64-45c1-a849-ac84d7326223.png">
 
 I find myself often needing to debug the Alfred script, so it's useful to learn [how to use the debugger](https://www.alfredapp.com/help/workflows/advanced/debugger/).
+
+Note: many thanks to [@deanishe](https://github.com/deanishe) for improvements to what I'm doing. Any
+foolishness remaining I claim for my own. See also his [https://github.com/deanishe/alfred-workflow](alfred-workflow) package.
