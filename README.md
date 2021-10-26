@@ -82,9 +82,9 @@ def clipboard_main():
 Creating the Alfred workflow is relatively simple. Create a new worklfow and name it. Typically, it will have four steps:
 
 1. A trigger command
-2. Executing ⌘Q to copy text into the clipboard
+2. Executing ⌘C to copy text into the clipboard
 3. Running your script
-4. Executing ⌘C to paste text
+4. Executing ⌘V to paste text
 
 The script should look like this (I use [zsh](https://www.zsh.org), but you might need to source a different dot-file):
 
