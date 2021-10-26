@@ -1,3 +1,4 @@
-source $HOME/.zshrc
-pyenv activate alfred-scripts
-python $HOME/projects/alfred-scripts/upper.py --clipboard
+export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
+export SCRIPTDIR=$HOME/projects/alfred-scripts
+export PYTHONPATH=$SCRIPTDIR/dist
+python3 $SCRIPTDIR/upper.py --clipboard

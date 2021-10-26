@@ -7,6 +7,12 @@ Our working example will be a script that will convert text in the Mac clipboard
 ## Set up
 
 1. Create a directory in which you want to place your Python-based Alfred scripts. I created mine in `$HOME/projects/alfred-scripts`
+2. Install the Python `clipboard` package locally (and any other packages you need):
+
+```bash
+cd $HOME/projects/alfred-scripts
+python3 -m pip install --target dist clipboard
+```
 
 ## Writing and testing a script locally
 
@@ -81,7 +87,6 @@ we install the `clipboard` package; if there are other packages you need, you'll
 export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
 export SCRIPTDIR=$HOME/projects/alfred-scripts
 export PYTHONPATH=$SCRIPTDIR/dist
-python3 -m pip install --target $PYTHONPATH clipboard --exists-action a
 python3 $SCRIPTDIR/upper.py --clipboard
 
 ```
