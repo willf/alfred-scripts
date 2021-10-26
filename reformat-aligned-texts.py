@@ -147,7 +147,6 @@ if __name__ == "__main__":
         if action == "--test":
             unittest.main()
         elif action == "--clipboard":
-            print("Clipboarding with " + clipboard.paste())
             clipboard_main()
         else:
             print("Unknown action: {}".format(action))
